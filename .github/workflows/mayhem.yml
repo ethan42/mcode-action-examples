@@ -50,6 +50,8 @@ jobs:
       - name: Start analysis
         uses: ForAllSecure/mcode-action@v1
         with:
+          mayhem-url: https://mayhem.forallsecure.com
+          mayhem-token: ${{ secrets.MAYHEM_TOKEN }}
           args: --image ${{ steps.meta.outputs.tags }}
           sarif-output: sarif
 
