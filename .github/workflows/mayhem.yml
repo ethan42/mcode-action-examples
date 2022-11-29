@@ -44,15 +44,31 @@ jobs:
         with:
           context: .
           push: true
+          file: mayhem/Dockerfile
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
-      - name: Start analysis
+    outputs:
+      image: ${{ steps.meta.outputs.tags }}
+
+  mayhem:
+    needs: build
+    name: 'fuzz ${{ matrix.mayhemfile }}'
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        mayhemfile:
+          - mayhem/Mayhemfile
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Start analysis for ${{ matrix.mayhemfile }}
         uses: ForAllSecure/mcode-action@v1
         with:
-          mayhem-url: https://mayhem.forallsecure.com
           mayhem-token: ${{ secrets.MAYHEM_TOKEN }}
-          args: --image ${{ steps.meta.outputs.tags }}
+          args: --image ${{ needs.build.outputs.image }} --file ${{ matrix.mayhemfile }} --duration 300
           sarif-output: sarif
 
       - name: Upload SARIF file(s)
