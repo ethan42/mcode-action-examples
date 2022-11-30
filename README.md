@@ -18,18 +18,19 @@ The `main` branch contains the following vulnerable targets:
 
 > When executing a new workflow/pipeline using the mCode GitHub Action, the corresponding `lighttpd` and `c-base-executable` targets will be built within a Docker image, which is pushed to the GitHub Container Registry, and ingested by Mayhem to fuzz the containerized targets. This is done using a [multi-stage Docker image build](https://docs.docker.com/build/building/multi-stage/).
 
-* `lighttpd 1.4.15`:
+* **lighttpd 1.4.15**:
     * [lighttpd 1.4.15 Dockerfile](https://github.com/ForAllSecure/mcode-action-examples/blob/main/Dockerfile): Build instructions for setting up a containerized `lighttpd 1.4.15` application.
     * [lighttpd 1.4.15 Mayhemfile](https://github.com/ForAllSecure/mcode-action-examples/blob/main/Mayhemfile.lighttpd): Configuration options for the resulting `lighttpd 1.4.15` CI pipeline Mayhem run.
-* `c-base-executable`:
+* **(vulnerable) c-base-executable**:
     * [c-base-executable Dockerfile](https://github.com/ForAllSecure/mcode-action-examples/blob/main/Dockerfile): Build instructions for setting up a containerized (and vulnerable) `c-base-executable` application.
     * [c-base-executable Mayhemfile](https://github.com/ForAllSecure/mcode-action-examples/blob/main/Mayhemfile.mayhemit): Configuration options for the resulting (vulnerable) `c-base-executable` CI pipeline Mayhem run.
 
 The `fixed` branch contains the following fixed targets:
 
-* `lighttpd 1.4.52`:
+* **lighttpd 1.4.52**:
     * [lighttpd 1.4.52 Dockerfile](https://github.com/ForAllSecure/mcode-action-examples/blob/fixed/Dockerfile): Build instructions for settings up a containerized `lighttpd 1.4.52` application.
     * [lighttpd 1.4.52 Mayhemfile](https://github.com/ForAllSecure/mcode-action-examples/blob/fixed/Mayhemfile.lighttpd): Configuration options for the resulting `lighttpd 1.4.52` CI pipeline Mayhem run.
+* **(fixed) c-base-executable**:
     * [c-base-executable Dockerfile](https://github.com/ForAllSecure/mcode-action-examples/blob/fixed/Dockerfile): Build instructions for setting up a containerized (and fixed) `c-base-executable` application.
     * [c-base-executable Mayhemfile](https://github.com/ForAllSecure/mcode-action-examples/blob/fixed/Mayhemfile.mayhemit): Configuration options for the resulting (fixed) `c-base-executable` CI pipeline Mayhem run.
 
