@@ -42,15 +42,15 @@ The `fixed` branch contains the following fixed targets:
 
     b. Click your profile drop-down and go to *Settings* > *API Tokens* to access your account API token.
 
-    c. Copy and paste your Mayhem token to your [GitHub Secrets](https://docs.github.com/en/actions/security-guides/encrypted-secrets#creating-encrypted-secrets-for-an-organization).
+    c. Copy and paste your Mayhem token to your forked repo's [GitHub Secrets](https://docs.github.com/en/actions/security-guides/encrypted-secrets#creating-encrypted-secrets-for-an-organization).
 
-2. On the `main` branch, navigate to your GitHub repository `Actions` tab and execute a CI pipeline for the `main` branch (assuming this is not already done automatically). This will build and push the `lighttpd 1.4.15` image to the GitHub Container Registry and use Mayhem to fuzz the resulting Docker image. Results can be found in the `Security` tab or on the Mayhem server itself with more details about the specific run.
+2. On the `main` branch, navigate to your GitHub repository `Actions` tab and execute a CI pipeline for the `main` branch (assuming this is not already done automatically). This will build and push the `lighttpd 1.4.15` and `(vulnerable) c-base-executable` containerized applications to the GitHub Container Registry and use Mayhem to fuzz the resulting Docker image. Results can be found in the `Security` tab or on the Mayhem instance itself with more details about the specific run.
 
     > **Note:** You may be required to set your package visibility settings to `Public` to give Mayhem permissions to ingest your Docker image from the GitHub Container Registry. Click on your package in the right-hand pane of your GitHub repository and go to *Package Settings*. Then, scroll down to *Package Visibility* and set the package to `Public`.
 
-3. Now, switch to the `fixed` branch. Create a pull request and set the PR to merge to `main` (**for your forked repo**). The mCode GitHub Action will automatically begin building and pushing the new `lighttpd 1.4.52` image to the GitHub Container Registry and use Mayhem to fuzz the resulting Docker image against the previous crashing test cases for `lighttpd 1.4.15` via regression testing. Results can then be found in the PR or on the Mayhem server itself with more details about the specific run. In addition, issues in the `Security` tab will also display defects that have been fixed as a result of the update.
+3. Now, switch to the `fixed` branch. Create a pull request and set the PR to merge to `main` (**for your forked repo**). The mCode GitHub Action will automatically begin building and pushing the new `lighttpd 1.4.52` and `(fixed) c-base-executable` containerized applications to the GitHub Container Registry and use Mayhem to fuzz the resulting Docker image against the previous crashing test cases for the corresponding targets via regression testing. Results can then be found in the PR or on the Mayhem server itself with more details about the specific run. In addition, issues in the `Security` tab will also display defects that have been fixed as a result of the update.
 
-Congrats! You just integrated Mayhem in a CI pipeline for the `lighttpd` target application! Extrapolating from this, you should be able to incorporate the same steps to integrate Mayhem into your own CI pipeline for your custom code.
+Congrats! You just integrated Mayhem in a multi-target CI pipeline for the `lighttpd` and `c-base-executable` applications! Extrapolating from this, you should now be able to incorporate the same steps to integrate Mayhem into your own CI pipeline for your custom code.
 
 ## About Us
 
