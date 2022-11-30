@@ -4,17 +4,34 @@
 
 A GitHub Action walk through for using Mayhem for Code to check for reliability, performance, and security issues in your application binary (packaged as a containerized [Docker](https://docs.docker.com/get-started/overview/) image) as a part of a CI pipeline.
 
-Visit [mCode GitHub Action](https://github.com/ForAllSecure/mcode-action/) to get more details on integrating Mayhem into your CI pipeline!
+Visit the [mCode GitHub Action](https://github.com/ForAllSecure/mcode-action/) to get more details on integrating Mayhem into your CI pipeline!
 
 ## Example GitHub Actions Integration
 
-[Lighttpd](https://www.lighttpd.net/) version `1.4.15` has already been known to have vulnerabilities, which were fixed in subsequent updates such as `1.4.52`. We'll use Mayhem in a CI pipeline to build these targets and prove that vulnerabilities were found and actually fixed in the later update, and ultimately showcase how you can integrate Mayhem in your own code too.
+In this example, we've provided two targets that will be built, fuzzed, and fixed/patched to showcase a multi-target mCode Action workflow within a CI pipeline: [Lighttpd](https://www.lighttpd.net/) version `1.4.15` and one of our `mayhem-example` targets, [c-base-executable](https://github.com/ForAllSecure/mayhem-examples/tree/main/c/base-executable/c-base-executable).
 
-We have two branches in this repository: `main` and `fixed`
+In particular, `lighttpd` version `1.4.15` was found to have vulnerabilities in the past, which were fixed in subsequent updates such as `1.4.52`. In tandem, our `c-base-executable` target has a bug that performs an `abort()` once a test case containing the string `bug` is input to the program, which we'll also fix in this example. Ultimately, we'll be using Mayhem in a CI pipeline to simulate a typical developer workflow such that we build and fuzz targets within a workflow to prove that vulnerabilities were found, and that subsequent PRs to fix these vulnerabilities is confirmed via Mayhem's regression testing (comparing crashing test cases of previous runs to current runs).
 
-The `main` branch contains a [Dockerfile](https://github.com/ForAllSecure/mcode-action-examples/blob/main/Dockerfile) with build instructions for setting up a containerized `lighttpd 1.4.15` application. The corresponding [Mayhemfile](https://github.com/ForAllSecure/mcode-action-examples/blob/main/Mayhemfile) contains the configuration options for the resulting CI pipeline Mayhem run. When executing a new workflow/pipeline using the mCode GitHub Action, the `lighttpd 1.4.15` will be built as a Docker image, pushed to the GitHub Container Registry, and ingested by Mayhem to fuzz the containerized target.
+We have two branches in this repository: `main` and `fixed`.
 
-The `fixed` branch contains both a [Dockerfile](https://github.com/ForAllSecure/mcode-action-examples/blob/fixed/Dockerfile) and corresponding [Mayhemfile](https://github.com/ForAllSecure/mcode-action-examples/blob/fixed/Mayhemfile) as well, representing the containerized `lighttpd 1.4.52` application and it's Mayhem configuration options, respectively. Naturally, a developer may create a pull request from the `fixed` branch to the `main` branch to update (and fix) the existing `lighttpd 1.4.15` application on `main`. The mCode GitHub Action will automatically execute to initiate the CI pipeline and will use the existing test cases generated from the `lighttpd 1.4.15` Mayhem run to perform regression testing on the new `lighttpd 1.4.52` target, thereby proving previous crashing test cases have been fixed via the update.
+The `main` branch contains the following vulnerable targets:
+
+> When executing a new workflow/pipeline using the mCode GitHub Action, the corresponding `lighttpd` and `c-base-executable` targets will be built within a Docker image, which is pushed to the GitHub Container Registry, and ingested by Mayhem to fuzz the containerized targets. This is done using a [multi-stage Docker image build](https://docs.docker.com/build/building/multi-stage/).
+
+* `lighttpd 1.4.15`:
+    * [lighttpd 1.4.15 Dockerfile](https://github.com/ForAllSecure/mcode-action-examples/blob/main/Dockerfile): Build instructions for setting up a containerized `lighttpd 1.4.15` application.
+    * [lighttpd 1.4.15 Mayhemfile](https://github.com/ForAllSecure/mcode-action-examples/blob/main/Mayhemfile.lighttpd): Configuration options for the resulting `lighttpd 1.4.15` CI pipeline Mayhem run.
+* `c-base-executable`:
+    * [c-base-executable Dockerfile](https://github.com/ForAllSecure/mcode-action-examples/blob/main/Dockerfile): Build instructions for setting up a containerized (and vulnerable) `c-base-executable` application.
+    * [c-base-executable Mayhemfile](https://github.com/ForAllSecure/mcode-action-examples/blob/main/Mayhemfile.mayhemit): Configuration options for the resulting (vulnerable) `c-base-executable` CI pipeline Mayhem run.
+
+The `fixed` branch contains the following fixed targets:
+
+* `lighttpd 1.4.52`:
+    * [lighttpd 1.4.52 Dockerfile](https://github.com/ForAllSecure/mcode-action-examples/blob/fixed/Dockerfile): Build instructions for settings up a containerized `lighttpd 1.4.52` application.
+    * [lighttpd 1.4.52 Mayhemfile](https://github.com/ForAllSecure/mcode-action-examples/blob/fixed/Mayhemfile.lighttpd): Configuration options for the resulting `lighttpd 1.4.52` CI pipeline Mayhem run.
+    * [c-base-executable Dockerfile](https://github.com/ForAllSecure/mcode-action-examples/blob/fixed/Dockerfile): Build instructions for setting up a containerized (and fixed) `c-base-executable` application.
+    * [c-base-executable Mayhemfile](https://github.com/ForAllSecure/mcode-action-examples/blob/fixed/Mayhemfile.mayhemit): Configuration options for the resulting (fixed) `c-base-executable` CI pipeline Mayhem run.
 
 ## Getting Started
 
