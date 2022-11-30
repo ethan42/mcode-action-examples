@@ -14,9 +14,9 @@ In particular, `lighttpd` version `1.4.15` was found to have vulnerabilities in 
 
 We have two branches in this repository: `main` and `fixed`.
 
-The `main` branch contains the following vulnerable targets:
-
 > When executing a new workflow/pipeline using the mCode GitHub Action, the corresponding `lighttpd` and `c-base-executable` targets will be built within a Docker image, which is pushed to the GitHub Container Registry, and ingested by Mayhem to fuzz the containerized targets. This is done using a [multi-stage Docker image build](https://docs.docker.com/build/building/multi-stage/).
+
+The `main` branch contains the following vulnerable targets:
 
 * **lighttpd 1.4.15**:
     * [lighttpd 1.4.15 Dockerfile](https://github.com/ForAllSecure/mcode-action-examples/blob/main/Dockerfile): Build instructions for setting up a containerized `lighttpd 1.4.15` application.
