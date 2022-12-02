@@ -1,0 +1,6 @@
+image: forallsecure/c-base-executable:latest # fields are unnecessary
+duration: 90                                 # since they will
+project: mayhem-examples                     # be filled at
+target: c-base-executable                    # run creation time
+cmds:
+  - cmd: /mayhemit @@
